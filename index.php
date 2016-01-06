@@ -20,6 +20,20 @@
                 
                 //this doesn't work..........
                 function winner($token){
+                    
+                    // checks for diagonals
+                    if (($this->position[2] == $token) &&
+                    ($this->position[4] == $token) &&
+                    ($this->position[6] == $token)) {
+                        $result = true;
+                        return $result;
+                    }else if (($this->position[0] == $token) &&
+                    ($this->position[4] == $token) &&
+                    ($this->position[8] == $token)) {
+                        $result = true;
+                        return $result;
+                    }
+                    
                      // !!game logic errors, doesn't check vertically
                     for($row=0; $row<3; $row++) {
                         $result = true;
@@ -39,17 +53,6 @@
                         if ($result){
                             return $result;
                         }
-                    }
-                 
-                    // checks for diagonals
-                    if (($this->position[2] == $token) &&
-                    ($this->position[4] == $token) &&
-                    ($this->position[6] == $token)) {
-                        $result = true;
-                    }else if (($this->position[0] == $token) &&
-                    ($this->position[3] == $token) &&
-                    ($this->position[6] == $token)) {
-                        $result = true;
                     }
                     return $result;
                 }
@@ -80,17 +83,36 @@
                     // so return a cell containing an anchor and showing a hyphen
                     return '<td><a href=”'.$link.'”></a></td>';
                 }
+                
+                function pick_move(){
+                    echo "moving..";
+                    //loop through and find next spot = '-'
+                    for($i = 0; $i < sizeof($this->position); $i++){
+                        if ($this->position[$i] = '-'){
+                            echo $this->position[$i];
+                            $this->position[$i] = 'x';
+                            echo $this->position[$i];
+                            break;
+                        }
+                    }
+                }
             }
             
             $squares = $_GET['board'];
             $game = new Game($squares);
+            
+            while(1){
             $game->display();
-            if ($game->winner('x'))
-            echo 'X wins. Lucky guesses!';
-            else if ($game->winner('o'))
-            echo 'Y wins. Muahahahaha';
-            else
-            echo 'No winner yet, but you are losing.';
+                if ($game->winner('x')){
+                    echo 'X wins. Lucky guesses!';
+                    break;
+                }else if ($game->winner('o')){
+                    echo 'O wins. Muahahahaha';
+                    break;
+                }else{
+                    $game->pick_move();
+                }
+            }
             
         ?>
     </body>

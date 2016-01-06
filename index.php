@@ -13,9 +13,13 @@
             '.$what;
             $hoursworked = 10;
             $rate = 12;
-            $total = $hoursworked * $rate;
+            if ($hoursworked > 40) {
+                $total = $hoursworked * $rate * 1.5;
+            } else {
+                $total = $hoursworked * $rate;
+            }
             echo '<br/>';
-            echo 'You owe me '.$total;
+            echo ($total > 0) ? 'You owe me '. $total : "You're welcome";
         ?>
     </body>
 </html>
